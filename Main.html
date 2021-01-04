@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HTML5之Canvas画正方形</title>
+
+    <style>
+        .canvas{
+            background-color: yellow;
+            width: 100px;
+            height: 100px;
+            animation: first 5s;
+        }
+        @keyframes first {
+            from {background: aliceblue}
+            to {background: yellow}
+        }
+        @-webkit-keyframes first /* Safari 与 Chrome */
+        {
+            from {background: red;}
+            to {background: yellow;}
+        }
+    </style>
+    <script type="text/javascript">
+        function drawFour(id)
+        {
+//获取canvas元素
+
+            var  canvas=document.getElementById("canvas");
+            if(canvas == null)
+                return false;
+//获取上下文
+            var context = canvas.getContext('2d');
+//设定填充图形的样式
+            context.fillStyle = "#EEEEFF";
+//绘制图形
+            context.fillRect(0,0,800,800);
+            context.fillStyle = "yellow";
+//设定图形边框的样式
+            context.strokeStyle = "blue";
+//指定线宽
+            context.lineWidth = 0;
+            context.fillRect(50,50,500,500);
+            context.strokeRect(50,50,500,500);
+        }
+        function findKeyframesRule(animName) {
+            var rule;
+            var ss = document.styleSheets;
+            for (var i = 0; i < ss.length; ++i) {
+                for (var x = 0; x < ss[i].cssRules.length; ++x) {
+                    rule = ss[i].cssRules[x];
+                    if (rule.name == animName && (rule.type
+                        == CSSRule.KEYFRAMES_RULE || ss[i].cssRules[j].type == CSSRule.WEBKIT_KEYFRAMES_RULE )) {
+                        return rule;
+                    }
+                }
+            }
+        }
+        function change(selector,animName)
+        {
+            var keyframes =
+                findKeyframesRule(animName);
+            console.log(keyframes)
+            // 删除已经存在的开始和结束帧
+            keyframes.deleteRule("0%");
+            keyframes.deleteRule("100%");
+            var clientWidth =  document.documentElement.clientWidth/2 || document.body.clientWidth/2 //此处为举例
+            keyframes.appendRule("0% { -webkit-transform: translate("+clientWidth+"px); }");
+
+            keyframes.appendRule("100% { -webkit-transform: translate(-"+clientWidth/2+"px); }");//结束移动屏幕一半
+            // 重新指定动画名字使之生效
+            console.log(document.querySelector(selector))
+            var style= document.querySelector(selector).style;
+            style.animationName = animName;
+            style.animationDuration="15s"
+            console.log(style)
+        }
+        function f() {
+            console.log(document.styleSheets);
+            for (var item in document.styleSheets ){
+                console.log(document.styleSheets[item])
+            }
+        }
+    </script>
+</head>
+<body onLoad="drawFour('canvas')">
+
+
+
+<!--<canvas  id="canvas" width="1200" height="560" />-->
+<div class="canvas" style="">
+
+</div>
+</body>
+<script type="text/javascript">
+    change(".canvas","first")
+</script>
+
+</html>
